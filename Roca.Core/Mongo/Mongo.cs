@@ -13,6 +13,7 @@ namespace Roca.Core
             _client = new(configuration["Mongo:ConnectionString"]);
             _database = _client.GetDatabase(configuration["Mongo:Database"]);
 
+            InitiliazeLocalizers();
             InitiliazeUsers();
             InitiliazeGuilds();
             InitiliazeMembers();

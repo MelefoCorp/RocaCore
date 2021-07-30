@@ -26,8 +26,8 @@ namespace Roca.Core
             if (cache && _membersCache.TryGetValue(user.Id, out var account))
                 return account;
 
-            using var cursor = await _membersCollection.FindAsync(x => x.Id == user.Id, null, cancellationToken);
-            account = await cursor.SingleOrDefaultAsync(cancellationToken) ?? new MemberAccount(user.Id, user.Guild.Id);
+            using var cursor = await _membersCollection.FindAsync(x => x.Id == user.Id, null, cancellationToken).ConfigureAwait(false);
+            account = await cursor.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false) ?? new MemberAccount(user.Id, user.Guild.Id);
 
             _membersCache.TryAdd(user.Id, account);
             return account;

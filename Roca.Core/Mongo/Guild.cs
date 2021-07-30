@@ -26,8 +26,8 @@ namespace Roca.Core
             if (cache && _guildsCache.TryGetValue(guild.Id, out var account))
                 return account;
 
-            using var cursor = await _guildsCollection.FindAsync(x => x.Id == guild.Id, null, cancellationToken);
-            account = await cursor.SingleOrDefaultAsync(cancellationToken) ?? new GuildAccount(guild.Id);
+            using var cursor = await _guildsCollection.FindAsync(x => x.Id == guild.Id, null, cancellationToken).ConfigureAwait(false);
+            account = await cursor.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false) ?? new GuildAccount(guild.Id);
 
             _guildsCache.TryAdd(guild.Id, account);
             return account;
