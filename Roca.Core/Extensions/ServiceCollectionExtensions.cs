@@ -15,7 +15,7 @@ namespace Roca.Core.Extensions
             if (assemblies == null)
                 throw new ArgumentNullException(nameof(assemblies));
 
-            var inter = typeof(T);
+            var inter = typeof(T).GetTypeInfo();
             var assembliesServices = assemblies.Select(x => x.GetTypes().Where(y => y.GetInterfaces().Contains(inter) && !y.IsAbstract && !y.IsInterface));
 
             foreach (var assembly in assembliesServices)
@@ -29,7 +29,7 @@ namespace Roca.Core.Extensions
             if (assemblies == null)
                 throw new ArgumentNullException(nameof(assemblies));
 
-            var inter = typeof(T);
+            var inter = typeof(T).GetTypeInfo();
             var assembliesServices = assemblies.Select(x => x.GetTypes().Where(y => y.GetInterfaces().Contains(inter) && !y.IsAbstract && !y.IsInterface));
 
             foreach (var assembly in assembliesServices)
@@ -43,7 +43,7 @@ namespace Roca.Core.Extensions
             if (assemblies == null)
                 throw new ArgumentNullException(nameof(assemblies));
 
-            var inter = typeof(T);
+            var inter = typeof(T).GetTypeInfo();
             var assembliesServices = assemblies.Select(x => x.GetTypes().Where(y => y.GetInterfaces().Contains(inter) && !y.IsAbstract && !y.IsInterface));
 
             foreach (var assembly in assembliesServices)
