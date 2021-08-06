@@ -1,4 +1,4 @@
-﻿using DSharpPlus.Entities;
+﻿using Discord;
 using MongoDB.Driver;
 using Roca.Core.Accounts;
 using System.Collections.Concurrent;
@@ -18,7 +18,7 @@ namespace Roca.Core
             _usersCache = new();
         }
 
-        public static async Task<UserAccount> GetAccount(this DiscordUser user, bool cache = true, CancellationToken cancellationToken = default)
+        public static async Task<UserAccount> GetAccount(this IUser user, bool cache = true, CancellationToken cancellationToken = default)
         {
             if (_usersCollection == null)
                 throw new MongoException("The Mongo client has not been initialized.");
