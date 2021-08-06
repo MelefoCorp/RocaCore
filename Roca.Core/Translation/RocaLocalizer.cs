@@ -20,6 +20,7 @@ namespace Roca.Core.Translation
         {
             get
             {
+                name = name.ToLowerInvariant();
                 if (!Texts.TryGetValue(name, out var result))
                     return FallbackLocalized(name);
                 if (!result.TryGetValue(CultureInfo.CurrentUICulture, out var value))
@@ -35,6 +36,7 @@ namespace Roca.Core.Translation
             {
                 var culture = CultureInfo.CurrentUICulture;
 
+                name = name.ToLowerInvariant();
                 if (!Texts.TryGetValue(name, out var result))
                     return FallbackLocalized(name);
                 if (!result.TryGetValue(culture, out var value))
@@ -47,7 +49,7 @@ namespace Roca.Core.Translation
             }
         }
 
-        public LocalizedString FallbackLocalized(string name)
+        private LocalizedString FallbackLocalized(string name)
         {
             if (!Texts.TryGetValue(name, out var result))
             {
