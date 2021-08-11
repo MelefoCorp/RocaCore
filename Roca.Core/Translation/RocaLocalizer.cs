@@ -51,12 +51,12 @@ namespace Roca.Core.Translation
 
         private LocalizedString FallbackLocalized(string name)
         {
-            if (!Texts.TryGetValue(name, out var result))
+            if (!Texts.TryGetValue(name, out _))
             {
                 Texts.Add(name, new());
                 this.Save();
             }
-            return new(name, $"[{name}]");
+            return new(name, $"[{name}]", true);
         }
 
         public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) => throw new System.NotImplementedException();
