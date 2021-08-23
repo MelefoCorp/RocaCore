@@ -18,7 +18,7 @@ namespace Roca.Core
             _membersCache = new();
         }
 
-        public static async Task<MemberAccount> GetAccount(this IGuildUser user, bool cache = true, CancellationToken cancellationToken = default)
+        public static MemberAccount GetAccount(this IGuildUser user, bool cache = true)
         {
             if (_membersCollection == null)
                 throw new MongoException("The Mongo client has not been initialized.");
@@ -26,8 +26,8 @@ namespace Roca.Core
             if (cache && _membersCache.TryGetValue(user.Id, out var account))
                 return account;
 
-            using var cursor = await _membersCollection.FindAsync(x => x.Id == user.Id, null, cancellationToken).ConfigureAwait(false);
-            account = await cursor.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false) ?? new MemberAccount(user.Id, user.Guild.Id);
+            var cursor = _membersCollection.Find(x => x.Id == user.Id);
+            account = cursor.SingleOrDefault() ?? new MemberAccount(user.Id, user.Guild.Id);
 
             _membersCache.TryAdd(user.Id, account);
             return account;
