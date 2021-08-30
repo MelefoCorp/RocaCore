@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using System;
-using System.Threading.Tasks;
 
 namespace Roca.Core.Interfaces
 {

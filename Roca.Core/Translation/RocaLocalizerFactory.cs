@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Localization;
 using System;
-using System.Threading.Tasks;
 
 namespace Roca.Core.Translation
 {

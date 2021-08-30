@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Roca.Core.Interfaces;
 using Roca.Core.Translation;
 using System;
 using System.Linq;

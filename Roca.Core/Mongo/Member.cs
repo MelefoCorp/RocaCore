@@ -9,10 +9,10 @@ namespace Roca.Core
 {
     public static partial class Mongo
     {
-        private static IMongoCollection<MemberAccount>? _membersCollection = null;
+        private static IMongoCollection<MemberAccount>? _membersCollection;
         private static ConcurrentDictionary<ulong, MemberAccount> _membersCache = new();
 
-        private static void InitiliazeMembers()
+        private static void InitializeMembers()
         {
             _membersCollection = _database!.GetCollection<MemberAccount>("Members");
             _membersCache = new();

@@ -1,39 +1,36 @@
 ﻿using MongoDB.Driver;
-using Roca.Core.Accounts;
 using Roca.Core.Translation;
 using System;
 using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Roca.Core
 {
     public static partial class Mongo
     {
-        private static IMongoCollection<RocaLocalizer>? _localizersCollection = null;
-        private static ConcurrentDictionary<string, RocaLocalizer> _localizersCache = new();
+        private static IMongoCollection<Rocalizer>? _localizersCollection;
+        private static ConcurrentDictionary<string, Rocalizer> _localizersCache = new();
 
-        private static void InitiliazeLocalizers()
+        private static void InitializeLocalizers()
         {
-            _localizersCollection = _database!.GetCollection<RocaLocalizer>("Localizers");
+            _localizersCollection = _database!.GetCollection<Rocalizer>("Localizers");
             _localizersCache = new();
         }
 
-        public static RocaLocalizer GetLocalizer(this Type type, bool cache = true)
+        public static Rocalizer GetLocalizer(this Type type, bool cache = true)
         {
             if (_localizersCollection == null)
                 throw new MongoException("The Mongo client has not been initialized.");
             if (cache && _localizersCache.TryGetValue(type.FullName!, out var localizer))
                 return localizer;
 
-            var cursor = _localizersCollection.Find(x => x.Name == type.FullName, null);
-            localizer = cursor.SingleOrDefault() ?? new RocaLocalizer(type.FullName!);
+            var cursor = _localizersCollection.Find(x => x.Name == type.FullName);
+            localizer = cursor.SingleOrDefault() ?? new Rocalizer(type.FullName!);
 
             _localizersCache.TryAdd(type.FullName!, localizer);
             return localizer;
         }
 
-        public static void Save(this RocaLocalizer account)
+        public static void Save(this Rocalizer account)
         {
             if (_localizersCollection == null)
                 throw new MongoException("The Mongo client has not been initialized.");
@@ -43,9 +40,9 @@ namespace Roca.Core
             });
         }
 
-        public static void Uncache(this RocaLocalizer account) => _localizersCache.TryRemove(account.Name, out _);
+        public static void Uncache(this Rocalizer account) => _localizersCache.TryRemove(account.Name, out _);
 
-        public static void Delete(this RocaLocalizer account)
+        public static void Delete(this Rocalizer account)
         {
             if (_localizersCollection == null)
                 throw new MongoException("The Mongo client has not been initialized.");

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
 using System.Configuration;
 
 namespace Roca.Core.Extensions
@@ -10,7 +9,7 @@ namespace Roca.Core.Extensions
         {
             if (string.IsNullOrWhiteSpace(config["Mongo:ConnectionString"]) ||
                 string.IsNullOrWhiteSpace(config["Mongo:Database"]))
-                    throw new ConfigurationErrorsException("Mongo section inside your configuration isn't complete, there must be a \"ConnectionString\" string and a \"Database\" string");
+                throw new ConfigurationErrorsException("Mongo section inside your configuration isn't complete, there must be a \"ConnectionString\" string and a \"Database\" string");
 
             if (string.IsNullOrWhiteSpace(config["RocaBot:Token"]) ||
                 string.IsNullOrWhiteSpace(config["RocaBot:ClientId"]) ||
