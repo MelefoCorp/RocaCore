@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Options;
 using MongoDB.Driver;
 
 namespace Roca.Core
@@ -10,6 +13,15 @@ namespace Roca.Core
 
         public static void Initialize(IConfiguration configuration)
         {
+            ConventionRegistry.Register("IgnoreExtraElements", new ConventionPack
+            {
+                new IgnoreExtraElementsConvention(true)
+            }, _ => true);
+            ConventionRegistry.Register("DictionaryRepresentation", new ConventionPack
+            {
+                new DictionaryRepresentationConvention(DictionaryRepresentation.ArrayOfDocuments)
+            }, _ => true);
+
             _client = new(configuration["Mongo:ConnectionString"]);
             _database = _client.GetDatabase(configuration["Mongo:Database"]);
 
@@ -17,6 +29,27 @@ namespace Roca.Core
             InitializeUsers();
             InitializeGuilds();
             InitializeMembers();
+        }
+    }
+
+    internal class DictionaryRepresentationConvention : ConventionBase, IMemberMapConvention
+    {
+        private readonly DictionaryRepresentation _representation;
+
+        public DictionaryRepresentationConvention(DictionaryRepresentation representation)
+            => _representation = representation;
+
+        public void Apply(BsonMemberMap map)
+            => map.SetSerializer(ConfigureSerializer(map.GetSerializer()));
+
+        private IBsonSerializer ConfigureSerializer(IBsonSerializer serializer)
+        {
+            if (serializer is IDictionaryRepresentationConfigurable dictionary)
+                serializer = dictionary.WithDictionaryRepresentation(_representation);
+
+            return serializer is not IChildSerializerConfigurable child
+                ? serializer
+                : child.WithChildSerializer(ConfigureSerializer(child.ChildSerializer));
         }
     }
 }

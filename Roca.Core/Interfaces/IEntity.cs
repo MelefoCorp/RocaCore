@@ -1,11 +1,10 @@
-﻿using MongoDB.Bson;
-using System;
+﻿using System;
 
 namespace Roca.Core.Interfaces
 {
     public interface IEntity
     {
-        public ObjectId ObjectId { get; }
+        public string ObjectId { get; }
         public DateTime CreationDate { get; }
     }
 }

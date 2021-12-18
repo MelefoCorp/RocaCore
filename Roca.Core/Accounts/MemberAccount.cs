@@ -8,7 +8,8 @@ namespace Roca.Core.Accounts
     public class MemberAccount : IAccount
     {
         [BsonId]
-        public ObjectId ObjectId { get; private init; } = ObjectId.GenerateNewId();
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string ObjectId { get; private init; } = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
 
         public DateTime CreationDate { get; private init; } = DateTime.UtcNow;
         public ulong Id { get; private init; }
