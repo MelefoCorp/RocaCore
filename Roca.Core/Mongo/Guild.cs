@@ -1,6 +1,8 @@
 ﻿using MongoDB.Driver;
 using Roca.Core.Accounts;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using Discord;
@@ -31,6 +33,13 @@ namespace Roca.Core
 
             _guildsCache.TryAdd(guild.Id, account);
             return account;
+        }
+
+        public static async Task<IEnumerable<GuildAccount>> GetGuildAccounts(this IDiscordClient client, bool cache = true)
+        {
+            var guilds = await client.GetGuildsAsync();
+
+            return guilds.Select(guild => guild.GetAccount());
         }
 
         public static async Task Save(this GuildAccount account, CancellationToken cancellationToken = default)

@@ -33,28 +33,28 @@ namespace Roca.Core.Accounts
         public ulong? Role { get; set; }
         public ulong? Category { get; set; }
         public string? Info { get; set; }
-        public TimeSpan ? Duration { get; set; }
-        public uint ReportsCount { get; set; } = 1;
-        public Dictionary<ulong, Report> Reports { get; private init; } = new();
+        public TimeSpan? Duration { get; set; }
+        public uint TicketsCount { get; set; } = 1;
+        public Dictionary<ulong, Ticket> Tickets { get; private init; } = new();
     }
 
-    public enum ReportStatus
+    public enum TicketStatus
     {
         Open,
         Closed
     }
 
-    public class Report
+    public class Ticket
     {
-        public Report(uint id, ulong user)
+        public Ticket(uint id, ulong user)
         {
             Id = id;
             User = user;
-            Status = ReportStatus.Open;
+            Status = TicketStatus.Open;
         }
 
         public uint Id { get; set; }
         public ulong User { get; private init; }
-        public ReportStatus Status { get; set; }
+        public TicketStatus Status { get; set; }
     }
 }
